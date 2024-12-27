@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: main.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "C:\\vscode\\python\\gemini\\GeminiAPI.py",
+            "console": "integratedTerminal",
+            "showReturnValue": true,
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "C:\\vscode\\python\\gemini\\GeminiAPI.py"
+            }
+        },
+        {
+            "name": "Python: test.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "C:\\vscode\\python\\tools\\pdf-regex-parser\\test.py",
+            "console": "integratedTerminal",
+            "showReturnValue": true,
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "C:\\vscode\\python\\tools\\pdf-regex-parser\\test.py"
+            }
+        },
+        
+    ],
+
+}
