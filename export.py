@@ -21,26 +21,28 @@ def write_html(html_body: str) -> None:
     a = Airium()
 
     timestamp = datetime.now().strftime("%m-%d-%y_%H-%M-%I")  # Use safe format
-    outfolder = "./exports/"
+    outfolder = r"/exports/"
     html_filename = f"gemini-export-{timestamp}"
     html_ext = ".html"
-    html_file = outfolder + html_filename + html_ext
+
+    cur_dir = os.getcwd()
+    current_wd = cur_dir + outfolder
+
+    html_file = current_wd + html_filename + html_ext
 
     i = 0
 
     try:
-        if not os.path.exists(outfolder):
-            os.makedirs(outfolder)
-            
+        if not os.path.exists(current_wd):
+            os.makedirs(current_wd)
+
         a = export_html(html_body, a, html_file)
 
         if os.path.exists(html_file):
             i += 1
             html_filename + (f"_{i}")
-
-        with open(html_file, "x") as f:
-            f.write(str(a))
-        return
-
+        else:
+            with open(html_file, "x") as f:
+                f.write(str(a))
     except Exception:
         raise

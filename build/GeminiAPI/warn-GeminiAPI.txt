@@ -33,6 +33,8 @@ missing module named multiprocessing.set_start_method - imported by multiprocess
 missing module named multiprocessing.get_start_method - imported by multiprocessing (top-level), multiprocessing.spawn (top-level)
 missing module named multiprocessing.RLock - imported by multiprocessing (delayed, conditional, optional), tqdm.std (delayed, conditional, optional)
 missing module named pyimod02_importers - imported by C:\vscode\python\gemini\.venv\Lib\site-packages\PyInstaller\hooks\rthooks\pyi_rth_pkgutil.py (delayed)
+missing module named 'bs4.element' - imported by airium.reverse (optional)
+missing module named bs4 - imported by airium.reverse (optional)
 missing module named pygments.lexers.PrologLexer - imported by pygments.lexers (top-level), pygments.lexers.cplint (top-level)
 missing module named _winreg - imported by platform (delayed, optional), pygments.formatters.img (optional)
 missing module named PIL - imported by google.generativeai.types.content_types (conditional), pygments.formatters.img (optional)
