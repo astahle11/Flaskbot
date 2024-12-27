@@ -1,1 +1,5 @@
 .venv
+/build
+GeminiAPI.spec
+/exports
+/__pycache__

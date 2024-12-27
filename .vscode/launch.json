@@ -10,7 +10,7 @@
             "showReturnValue": true,
             "justMyCode": true,
             "env": {
-                "PYTHONPATH": "C:\\vscode\\python\\gemini\\GeminiAPI.py"
+                "PYTHONPATH": "C:\\vscode\\python\\gemini"
             }
         },
         {

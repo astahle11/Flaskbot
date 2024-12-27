@@ -1,9 +1,9 @@
-from datetime import datetime
-
 import google.generativeai as genai
 from rich.console import Console
 from rich.text import Text
 from rich.theme import Theme
+
+from export import write_html
 
 theme = Theme(
     {
@@ -18,48 +18,48 @@ theme = Theme(
 )
 
 
-def export_html(response):
-    with open("output.html", "w") as f:
-        f.write(response(datetime.now))
-    return
-
-
-if __name__ == "__main__":
+def main():
     try:
-        console = Console(
-            color_system="auto", soft_wrap=True, record=False, theme=theme
-        )
-
+        console = Console(color_system="auto", soft_wrap=True, record=True, theme=theme)
         console.print(
             Text(
-                "Welcome to AI Chat. Type 'exit' to quit.\n",
+                "Welcome to AI Chat. Press CTRL-C to quit.\n",
                 style="system",
             )
         )
 
         while True:
-            console.print("[You]: ", style="user", end="")
+            content = []
+            str(console.print("You: ", style="user", end=""))
             user_input = input("")
+
+            content.append("\nYou: " + user_input)
 
             genai.configure(api_key="AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw")
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(str(user_input))
 
-            response = response.text
-            console.print("\n[Gemini]:", style="chatbot", end=" ")
-            console.print(f"{response}")
+            str(console.print("\nGemini: ", style="chatbot", end=""))
+            console.print(f"{response.text}")
 
-            # Exit condition
-            if input.lower() == "exit":
-                console.print("\nGoodbye!", style="system")
-                break
+            content.append("\nGemini: " + response.text)
+
+            html_body = "\n".join(content).replace("\n", "<br>")
+
+    # Exit condition
+    except KeyboardInterrupt:
+        pass
 
     except Exception as e:
-        console.print("Exception:", e, style="error")
+        console.print("EXCEPTION: \n", e, style="error")
 
     finally:
-        if console.record:
-            # text output
-            print(
-                "\nRecorded HTML output:\n", export_html(response), style="system"
-            )  # HTML output
+        console.print("\n\nRecording HTML output...", style="system")
+        write_html(html_body)
+
+        console.print("Exiting!", style="system")
+        quit()
+
+
+if __name__ == "__main__":
+    main()
