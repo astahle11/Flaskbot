@@ -17,3 +17,13 @@ print("Metadata:")
 for key, value in metadata.items():
     print(f"{key}: {value}")
 
+# Extract drawings and look for rectangles
+for page_number, page in enumerate(doc):
+    drawings = page.get_drawings()
+    print(f"Page {page_number + 1} Drawings:")
+    for drawing in drawings:
+        for item in drawing["items"]:
+            if item[0] == "rect":  # Check for rectangles
+                rect = item[1]
+                print(f"Rectangle: {rect}")
+
