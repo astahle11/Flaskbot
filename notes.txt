@@ -1,0 +1,7 @@
+Python Library/Kotlin Equivalent
+
+google.generativeai: Google Cloud Client Library or Retrofit for REST APIs
+rich: Logback/SLF4J or ANSI escape codes
+os:	Kotlin’s File, System, and ProcessBuilder
+datetime:	java.time package (e.g., LocalDateTime)
+airium:	kotlinx-html for HTML DSL
