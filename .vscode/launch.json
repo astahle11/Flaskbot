@@ -5,24 +5,12 @@
             "name": "Python: main.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "C:\\vscode\\python\\gemini\\GeminiAPI.py",
+            "program": "C:\\vscode\\python\\ChatCLI\\ChatCLI.py",
             "console": "integratedTerminal",
             "showReturnValue": true,
             "justMyCode": true,
             "env": {
-                "PYTHONPATH": "C:\\vscode\\python\\gemini"
-            }
-        },
-        {
-            "name": "Python: test.py",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "C:\\vscode\\python\\tools\\pdf-regex-parser\\test.py",
-            "console": "integratedTerminal",
-            "showReturnValue": true,
-            "justMyCode": true,
-            "env": {
-                "PYTHONPATH": "C:\\vscode\\python\\tools\\pdf-regex-parser\\test.py"
+                "PYTHONPATH": "C:\\vscode\\python\\ChatCLI\\ChatCLI.py"
             }
         },
         
