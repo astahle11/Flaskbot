@@ -5,3 +5,15 @@ rich: Logback/SLF4J or ANSI escape codes
 os:	Kotlin’s File, System, and ProcessBuilder
 datetime:	java.time package (e.g., LocalDateTime)
 airium:	kotlinx-html for HTML DSL
+
+import fitz  # PyMuPDF
+
+# Open the PDF file
+doc = fitz.open("autocad_export.pdf")
+
+# Access document metadata
+metadata = doc.metadata
+print("Metadata:")
+for key, value in metadata.items():
+    print(f"{key}: {value}")
+
