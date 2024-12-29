@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+
 import google.generativeai as genai
+import httplib2
 from rich.console import Console
 from rich.text import Text
 from rich.theme import Theme
@@ -8,7 +10,7 @@ from export import write_html
 
 """
 [GPLv3 LICENSE] 
-This program is free software: you can redistribute it and/or modify it under
+This program is free software: you can redistribute it and/or` modify it under
 the terms of the GNU General Public License as published by the Free Software
 Foundation, either version 3 of the License, or (at your option) any later
 version.
@@ -21,6 +23,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 version_num = "1.0"
+
+api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
+GENAI_API_DISCOVERY_URL = "https://generativelanguage.googleapis.com/$discovery/rest"
 
 theme = Theme(
     {
@@ -47,11 +52,26 @@ cyberpunk_theme = Theme(
     }
 )
 
+console = Console(
+    color_system="auto", soft_wrap=True, record=True, theme=cyberpunk_theme
+)
 
-class EmptyException:
-    """Exception for handling empty string in user_input."""
 
-    pass
+def test_connection():
+    """Test the connection prior to processing a response. Implemented due to occasional 500 errors.
+
+    Returns:
+        response_good: True/False depending on the received http status.
+    """
+    h = httplib2.Http()  # Create an Http object
+
+    response, content = h.request(f"{GENAI_API_DISCOVERY_URL}", "GET")
+    # console.print(response, content)
+    if response.status == 403:
+        response_good = True
+    else:
+        response_good = False
+    return response_good
 
 
 def main():
@@ -68,10 +88,6 @@ def main():
 
     """
     try:
-        console = Console(
-            color_system="auto", soft_wrap=True, record=True, theme=cyberpunk_theme
-        )
-
         console.print(
             Text(f"# ChatCLI Version: {version_num} #\n"),
             style="system",
@@ -81,6 +97,7 @@ def main():
 
         while True:
             content = []
+            max_retries = 0
 
             while True:
                 str(console.print("You: ", style="user", end=""))
@@ -95,10 +112,22 @@ def main():
 
             content.append("\nYou: " + user_input)
 
-            genai.configure(api_key="AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw")
+            genai.configure(api_key=api_key)
             model = genai.GenerativeModel("gemini-1.5-flash")
-            response = model.generate_content(str(user_input))
 
+            response_good = test_connection()
+
+            if not response_good:
+                max_retries + 1
+                console.print("Trying to establish server connection...", style="error")
+
+                if max_retries == 5:
+                    console.print("Failed to establish connection.")
+                    raise ConnectionError
+            else:
+                pass
+
+            response = model.generate_content(str(user_input))
             str(console.print("\nBot: ", style="chatbot", end=""))
             console.print(f"{response.text}")
 
