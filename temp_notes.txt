@@ -17,3 +17,6 @@ def create_session_with_retries():
 # Example usage
 session = create_session_with_retries()
 response = session.get("http://example.com")
+
+# in finally
+input("Press Enter to exit...")
