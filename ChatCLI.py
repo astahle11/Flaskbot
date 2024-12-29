@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
+import sys
+import time
+
+import google.api_core.exceptions
 import google.generativeai as genai
-import httplib2
 from rich.console import Console
 from rich.text import Text
 from rich.theme import Theme
@@ -22,17 +25,22 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
+sys.tracebacklimit = 5
+
 version_num = "1.0"
 
 api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
-GENAI_API_DISCOVERY_URL = "https://generativelanguage.googleapis.com/$discovery/rest"
+gemini_endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=YOUR_API_KEY"
+
+
+model_name = "gemini-1.5-flash"
 
 theme = Theme(
     {
         "background": "black",
         "chatbot": "green1",
         "user": "cyan1",
-        "system": "bold bright_white",
+        "system": "bright_white",
         "info": "bright_blue",
         "error": "bright_red",
         "highlight": "bright_magenta",
@@ -49,29 +57,13 @@ cyberpunk_theme = Theme(
         "info": "cyan2",  # Neon Blue for information
         "error": "#FF4500",  # Orange-Red for errors
         "highlight": "#32CD32",  # Bright Lime Green for highlights
-    }
+    },
+    inherit=False,
 )
 
 console = Console(
     color_system="auto", soft_wrap=True, record=True, theme=cyberpunk_theme
 )
-
-
-def test_connection():
-    """Test the connection prior to processing a response. Implemented due to occasional 500 errors.
-
-    Returns:
-        response_good: True/False depending on the received http status.
-    """
-    h = httplib2.Http()  # Create an Http object
-
-    response, content = h.request(f"{GENAI_API_DISCOVERY_URL}", "GET")
-    # console.print(response, content)
-    if response.status == 403:
-        response_good = True
-    else:
-        response_good = False
-    return response_good
 
 
 def main():
@@ -97,7 +89,6 @@ def main():
 
         while True:
             content = []
-            max_retries = 0
 
             while True:
                 str(console.print("You: ", style="user", end=""))
@@ -113,36 +104,38 @@ def main():
             content.append("\nYou: " + user_input)
 
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-1.5-flash")
-
-            response_good = test_connection()
-
-            if not response_good:
-                max_retries + 1
-                console.print("Trying to establish server connection...", style="error")
-
-                if max_retries == 5:
-                    console.print("Failed to establish connection.")
-                    raise ConnectionError
-            else:
-                pass
-
+            model = genai.GenerativeModel(model_name)
             response = model.generate_content(str(user_input))
+
             str(console.print("\nBot: ", style="chatbot", end=""))
             console.print(f"{response.text}")
 
-            content.append("\nGemini: " + response.text)
+            content.append("AI: " + response.text)
 
             html_body = "\n".join(content).replace("\n", "<br>")
 
     except Exception as e:
-        console.print("\nEXCEPTION: ", e, style="error")
+        console.print(f"Exception occurred: {e}", style="error")
+
+    except (
+        google.api_core.exceptions.InternalServerError,
+        google.api_core.exceptions.GatewayTimeout,
+        google.api_core.exceptions.ServerError,
+        google.api_core.exceptions.ServiceUnavailable,
+        google.api_core.exceptions.Unknown,
+    ) as e:
+        console.print(f"API error occurred: {e}", style="error")
+        console.print("Resuming...")
+        time.sleep(2)
+
+        # Do not return, just continue the execution of the script
+
+    except KeyboardInterrupt:
+        pass
 
     finally:
         console.print("\nRecording HTML output...", style="system")
         write_html(html_body)
-
-        console.print("Exiting!", style="system")
         quit()
 
 
