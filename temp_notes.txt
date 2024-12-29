@@ -1,0 +1,19 @@
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+import requests
+
+def create_session_with_retries():
+    session = requests.Session()
+    retries = Retry(
+        total=3,               # Total retries
+        backoff_factor=1,      # Exponential backoff factor
+        status_forcelist=[500, 502, 503, 504],  # Retry on these status codes
+    )
+    adapter = HTTPAdapter(max_retries=retries)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
+
+# Example usage
+session = create_session_with_retries()
+response = session.get("http://example.com")
