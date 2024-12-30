@@ -7,7 +7,6 @@ import google.api_core.exceptions
 import google.generativeai as genai
 from google.generativeai import GenerationConfig
 from rich.console import Console
-from rich.text import Text
 from rich.theme import Theme
 
 from export import write_html
@@ -27,28 +26,31 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 sys.tracebacklimit = 0
-
 version_num = "alpha"
-
 api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
-
-
 model_name = "gemini-1.5-pro-latest"
 
-theme = Theme(
-    {
-        "background": "black",
-        "chatbot": "green1",
-        "user": "cyan1",
-        "system": "bright_white",
-        "info": "bright_blue",
-        "error": "bright_red",
-        "highlight": "bright_magenta",
-    }
-)
+
+class Common:
+    @staticmethod
+    def intro() -> None:
+        console.print(
+            f"\nChatCLI [Version: {version_num}]",
+            style="system",
+            no_wrap=True,
+            justify="left",
+        )
+        console.print("Model: ", style="bright_white", end="")
+        console.print(f"{model_name}", style="cyan2")
+        console.print("CTRL-C to quit.\n", style="bright_white")
+
+    @staticmethod
+    def exitmsg() -> None:
+        console.print("(Press Enter to quit)", style="bright_white", end="")
+        input()
 
 
-cyberpunk_theme = Theme(
+custom_theme = Theme(
     {
         "background": "#1C1C1C",  # Dark Gray background
         "chatbot": "dark_slate_gray2",  # Bright Magenta (Cyberpunk vibe)
@@ -61,45 +63,28 @@ cyberpunk_theme = Theme(
     inherit=False,
 )
 
-console = Console(
-    color_system="auto", soft_wrap=True, record=True, theme=cyberpunk_theme
-)
+console = Console(color_system="auto", soft_wrap=True, record=True, theme=custom_theme)
 
 
 def main():
-    """Main code block. Does the following:
+    export_html = False  # Initialize as false in case the program exits before any response content is generated.
 
-    - Initializes the rich console
-    - Initializes the "content" variable (where the discussion will be stored)
-    - Accepts user input and appends the string to the contents list.
-    - Configures the response model and then appends the response to the contents list.
-    - Joins the collected content strings and replaces newlines with html breaks.
-    - Regardless of how the script is ended, the finally block calls the HTML functions in export.py
-      and writes the HTML file.
-    - Exports are saved in /exports, which is created in the same directory that the script is in.
-
-    """
     try:
-        console.print(
-            Text(f"# ChatCLI Version: {version_num} #\n"),
-            style="system",
-            no_wrap=True,
-            justify="left",
-        )
+        Common.intro()
 
         while True:
-            content = []
+            export_html = export_html
+            content: list = []
 
             while True:
                 str(console.print("You: ", style="user", end=""))
                 user_input = input("")
+
                 if user_input.strip():
                     break
                 else:
+                    console.print("\n", end="")
                     continue
-
-            if user_input == "q":
-                exit()
 
             content.append("\nYou: " + user_input)
 
@@ -117,9 +102,13 @@ def main():
             str(console.print("\nBot: ", style="chatbot", end=""))
             console.print(f"{response.text}")
 
-            content.append("AI: " + response.text)
+            content.append("Bot: " + response.text)
 
             html_body = "\n".join(content).replace("\n", "<br>")
+
+            export_html = (
+                True  # Once html_body is written to once, exporting an HTML is okay.
+            )
 
     except Exception as e:
         console.print(f"Exception occurred: {e}", style="error")
@@ -138,12 +127,17 @@ def main():
         # Do not return, just continue the execution of the script
 
     except KeyboardInterrupt:
+        console.print("\n", end="")
         pass
 
     finally:
-        console.print("\nRecording HTML output...", style="system")
-        write_html(html_body)
-        input("Press Enter to quit...")
+        if not export_html:
+            Common.exitmsg()
+
+        else:
+            console.print("\nRecording HTML output...", style="system")
+            write_html(html_body)
+            Common.exitmsg()
 
 
 if __name__ == "__main__":
