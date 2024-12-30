@@ -26,7 +26,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 sys.tracebacklimit = 0
-version_num = "alpha"
+version_num = "0.1.0-alpha0.4"
 api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
 model_name = "gemini-1.5-pro-latest"
 
@@ -119,6 +119,14 @@ def main():
                     raise
                 if quit_prompt.strip() == "n":
                     continue
+
+            except google.api_core.exceptions.TooManyRequests as e:
+                console.print(f"{e}")
+                console.print(
+                    "Too many requests. 1 minute wait period until next query.\n"
+                )
+                time.sleep(60)
+                continue
 
     except Exception as e:
         console.print(f"Exception occurred: {e}", style="error")
