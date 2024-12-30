@@ -26,9 +26,9 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
-sys.tracebacklimit = 5
+sys.tracebacklimit = 0
 
-version_num = "1.0"
+version_num = "alpha"
 
 api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
 
@@ -144,7 +144,6 @@ def main():
         console.print("\nRecording HTML output...", style="system")
         write_html(html_body)
         input("Press Enter to quit...")
-        quit()
 
 
 if __name__ == "__main__":
