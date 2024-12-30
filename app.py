@@ -102,7 +102,7 @@ def main():
             str(console.print("\nBot: ", style="chatbot", end=""))
             console.print(f"{response.text}")
 
-            content.append("Bot: " + response.text)
+            content.append("\nBot: " + response.text)
 
             html_body = "\n".join(content).replace("\n", "<br>")
 
