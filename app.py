@@ -26,7 +26,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 sys.tracebacklimit = 0
-version_num = "0.1.0-alpha0.4"
+version_num = "0.1.0-alpha.4"
 api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
 model_name = "gemini-1.5-pro-latest"
 
