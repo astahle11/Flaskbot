@@ -147,5 +147,6 @@
         "editor.formatOnSave": true,
         "editor.formatOnType": true,
         "diffEditor.wordWrap": "on",
+        
     }
 }

@@ -121,9 +121,10 @@ def main():
                     continue
 
             except google.api_core.exceptions.TooManyRequests as e:
-                console.print(f"{e}")
+                console.print(f"{e}", style="error")
                 console.print(
-                    "Too many requests. 1 minute wait period until next query.\n"
+                    "Too many requests. 1 minute wait period until next query.\n",
+                    style="error",
                 )
                 time.sleep(60)
                 continue

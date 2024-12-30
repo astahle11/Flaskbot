@@ -5,13 +5,17 @@
             "name": "Python: main.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "C:\\vscode\\python\\ChatCLI\\ChatCLI.py",
+            "program": "C:\\vscode\\python\\tools\\chatCLI\\chatCLI.py",
             "console": "integratedTerminal",
             "showReturnValue": true,
             "justMyCode": true,
             "env": {
-                "PYTHONPATH": "C:\\vscode\\python\\ChatCLI\\ChatCLI.py"
+                "PYTHONPATH": "C:\\vscode\\python\\tools\\chatCLI\\chatCLI.py",
+            "terminal.integrated.shell.windows": "cmd.exe",
+            "terminal.integrated.shellArgs.windows": "/k %CMDER_ROOT%\\vendor/init.bat",
+            "terminal.external.windowsExec": "bin\\Cmder.exe",
             }
+            
         },
         
     ],
