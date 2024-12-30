@@ -5,6 +5,7 @@ import time
 
 import google.api_core.exceptions
 import google.generativeai as genai
+from google.generativeai import GenerationConfig
 from rich.console import Console
 from rich.text import Text
 from rich.theme import Theme
@@ -30,10 +31,9 @@ sys.tracebacklimit = 5
 version_num = "1.0"
 
 api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
-gemini_endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=YOUR_API_KEY"
 
 
-model_name = "gemini-1.5-flash"
+model_name = "gemini-1.5-pro-latest"
 
 theme = Theme(
     {
@@ -103,9 +103,16 @@ def main():
 
             content.append("\nYou: " + user_input)
 
+            config = GenerationConfig(
+                max_output_tokens=400,  # Maximum number of tokens in the response
+                temperature=0.3,  # Controls randomness, higher values = more random
+                top_k=40,  # Number of top tokens to consider for sampling
+                top_p=0.95,  # Cumulative probability threshold for sampling
+            )
+
             genai.configure(api_key=api_key)
             model = genai.GenerativeModel(model_name)
-            response = model.generate_content(str(user_input))
+            response = model.generate_content(str(user_input), generation_config=config)
 
             str(console.print("\nBot: ", style="chatbot", end=""))
             console.print(f"{response.text}")
@@ -136,6 +143,7 @@ def main():
     finally:
         console.print("\nRecording HTML output...", style="system")
         write_html(html_body)
+        input("Press Enter to quit...")
         quit()
 
 
