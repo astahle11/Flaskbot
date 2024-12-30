@@ -42,7 +42,7 @@ class Common:
         )
         console.print("Model: ", style="bright_white", end="")
         console.print(f"{model_name}", style="cyan2")
-        console.print("CTRL-C to quit.\n", style="bright_white")
+        console.print("CTRL-C to quit.", style="bright_white")
 
     @staticmethod
     def exitmsg() -> None:
@@ -75,43 +75,56 @@ def main():
         while True:
             export_html = export_html
             content: list = []
+            try:
+                while True:
+                    str(console.print("\nYou: ", style="user", end=""))
+                    user_input = input("")
 
-            while True:
-                str(console.print("You: ", style="user", end=""))
-                user_input = input("")
+                    if user_input.strip():
+                        break
+                    else:
+                        console.print("\n", end="")
+                        continue
 
-                if user_input.strip():
-                    break
-                else:
-                    console.print("\n", end="")
+                content.append("\nYou: " + user_input)
+
+                config = GenerationConfig(
+                    max_output_tokens=2000,  # Maximum number of tokens in the response
+                    temperature=0.3,  # Controls randomness, higher values = more random
+                    top_k=40,  # Number of top tokens to consider for sampling
+                    top_p=0.95,  # Cumulative probability threshold for sampling
+                )
+
+                genai.configure(api_key=api_key)
+                model = genai.GenerativeModel(model_name)
+                response = model.generate_content(
+                    str(user_input), generation_config=config
+                )
+
+                str(console.print("\nBot: ", style="chatbot"))
+                console.print(f"{response.text}")
+
+                content.append("\nBot: " + response.text)
+
+                html_body = "\n".join(content).replace("\n", "<br>")
+
+                export_html = True  # Once html_body is written to once, exporting an HTML is okay.
+
+            except KeyboardInterrupt:
+                console.print("\n", end="")
+                console.print("\nQuit? y/n", style="system")
+                quit_prompt = input("")
+
+                if quit_prompt.strip() == "y":
+                    raise
+                if quit_prompt.strip() == "n":
                     continue
-
-            content.append("\nYou: " + user_input)
-
-            config = GenerationConfig(
-                max_output_tokens=400,  # Maximum number of tokens in the response
-                temperature=0.3,  # Controls randomness, higher values = more random
-                top_k=40,  # Number of top tokens to consider for sampling
-                top_p=0.95,  # Cumulative probability threshold for sampling
-            )
-
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel(model_name)
-            response = model.generate_content(str(user_input), generation_config=config)
-
-            str(console.print("\nBot: ", style="chatbot", end=""))
-            console.print(f"{response.text}")
-
-            content.append("\nBot: " + response.text)
-
-            html_body = "\n".join(content).replace("\n", "<br>")
-
-            export_html = (
-                True  # Once html_body is written to once, exporting an HTML is okay.
-            )
 
     except Exception as e:
         console.print(f"Exception occurred: {e}", style="error")
+
+    except KeyboardInterrupt:
+        pass
 
     except (
         google.api_core.exceptions.InternalServerError,
@@ -126,18 +139,15 @@ def main():
 
         # Do not return, just continue the execution of the script
 
-    except KeyboardInterrupt:
-        console.print("\n", end="")
-        pass
-
     finally:
         if not export_html:
-            Common.exitmsg()
+            exit()
 
         else:
             console.print("\nRecording HTML output...", style="system")
             write_html(html_body)
-            Common.exitmsg()
+            console.print("Done.", style="system")
+            exit()
 
 
 if __name__ == "__main__":
