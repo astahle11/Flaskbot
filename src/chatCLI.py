@@ -9,7 +9,7 @@ from google.generativeai import GenerationConfig
 from rich.console import Console
 from rich.theme import Theme
 
-from export import write_html
+from src.export import write_html
 
 """
 [GPLv3 LICENSE] 
