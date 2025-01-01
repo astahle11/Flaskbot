@@ -11,8 +11,7 @@ from rich.console import Console
 from rich.theme import Theme
 
 from export import write_html
-from ui.mainWindow import MainWindow
-from ui.chatWidget import ChatBrowser
+from mainWindow import MainWindow
 
 """
 [GPLv3 LICENSE] 
@@ -64,6 +63,7 @@ custom_theme = Theme(
     inherit=False,
 )
 
+
 sys.tracebacklimit = 0
 version_num = "0.1.0-alpha.4"
 api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
@@ -79,7 +79,7 @@ def main():
         w = MainWindow()
         w.show()
         app.exec()
-        
+
         Common.intro()
 
         while True:
@@ -100,7 +100,7 @@ def main():
 
                 config = GenerationConfig(
                     max_output_tokens=2000,  # Maximum number of tokens in the response
-                    temperature=0.3,  # Controls randomness, higher values = more random
+                    temperature=0.3,  # Controls ranccdomness, higher values = more random
                     top_k=40,  # Number of top tokens to consider for sampling
                     top_p=0.95,  # Cumulative probability threshold for sampling
                 )
@@ -118,7 +118,7 @@ def main():
 
                 html_body = "\n".join(content).replace("\n", "<br>")
 
-                export_html = True  # Once html_body is written to once, exporting an HTML is okay.
+                export_html = False  # Once html_body is written to once, exporting an HTML is okay.
 
             except KeyboardInterrupt:
                 console.print("\n", end="")
@@ -129,6 +129,8 @@ def main():
                     raise
                 if quit_prompt.strip() == "n":
                     continue
+                if quit_prompt.strip() != "y" or "n":
+                    raise KeyboardInterrupt
 
             except google.api_core.exceptions.TooManyRequests as e:
                 console.print(f"{e}", style="error")
