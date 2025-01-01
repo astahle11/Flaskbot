@@ -5,3 +5,5 @@ https://github.com/miguelgrinberg/Flask-SocketIO-Chat
 https://github.com/petersimeth/basic-flask-template
 
 https://medium.com/@ccpythonprogramming/using-sqlite-fts-full-text-search-with-python-5d749ea29859
+
+https://github.com/coleifer/sqlite-web?tab=readme-ov-file
