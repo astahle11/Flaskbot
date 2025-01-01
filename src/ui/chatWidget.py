@@ -9,119 +9,83 @@ from PyQt6.QtWidgets import (
 )
 
 
-# ChatBrowser: Displays chat messages in a scrollable area
 class ChatBrowser(QScrollArea):
+    """Widget to display chat messages in a scrollable area."""
+
     def __init__(self):
         super().__init__()
-        self.__init_ui()
 
-    def __init_ui(self):
-        """Initialize the UI for the chat browser."""
-        # Layout to stack chat messages vertically
-        layout = QVBoxLayout()
-        layout.setAlignment(Qt.AlignmentFlag.AlignTop)  # Align messages to the top
-        layout.setSpacing(0)  # No spacing between messages
-        layout.setContentsMargins(0, 0, 0, 0)  # No margins around messages
+        self.layout = QVBoxLayout()
+        self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.layout.setContentsMargins(5, 5, 5, 5)  # Reduced margins
 
-        # Widget to contain the layout
-        widget = QWidget()
-        widget.setLayout(layout)
+        self.container = QWidget()
+        self.container.setLayout(self.layout)
 
-        # Configure the scroll area
-        self.setWidget(widget)
+        self.setWidget(self.container)
         self.setWidgetResizable(True)
+        self.setFixedSize(460, 480)  # Adjusted size to match parent
 
-    def show_text(self, text, is_user_message):
-        """Add a new chat message to the browser.
+    def add_message(self, message: str, is_user: bool):
+        """Add a new message to the chat."""
+        label = QLabel(message)
+        label.setWordWrap(True)  # Allow text wrapping
+        label.setAlignment(
+            Qt.AlignmentFlag.AlignRight if is_user else Qt.AlignmentFlag.AlignLeft
+        )
 
-        Args:
-            text (str): The message text.
-            is_user_message (bool): True if the message is from the user, False otherwise.
-        """
-        chat_label = QLabel(text)
-        chat_label.setWordWrap(True)  # Allow text to wrap
-        chat_label.setTextInteractionFlags(
-            Qt.TextInteractionFlag.TextSelectableByMouse
-        )  # Allow text selection
-
-        # Style based on message sender
-        if is_user_message:
-            chat_label.setStyleSheet("QLabel { padding: 1em; }")
-            chat_label.setAlignment(Qt.AlignmentFlag.AlignRight)
+        # Style the message differently based on sender
+        if is_user:
+            label.setStyleSheet(
+                "background-color: #DCF8C6; padding: 10px; border-radius: 5px;"
+            )
         else:
-            chat_label.setStyleSheet("QLabel { background-color: #DDD; padding: 1em; }")
-            chat_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            label.setStyleSheet(
+                "background-color: #FFF; padding: 10px; border-radius: 5px;"
+            )
 
         # Add the message to the layout
-        self.widget().layout().addWidget(chat_label)
+        self.layout.addWidget(label)
 
-    def event(self, event):
-        """Automatically scroll to the bottom when new messages are added."""
-        if event.type() == 43:  # QEvent.LayoutRequest
-            self.verticalScrollBar().setSliderPosition(
-                self.verticalScrollBar().maximum()
-            )
-        return super().event(event)
+        # Auto-scroll to the bottom
+        self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
 
 
-# TextEditPrompt: A custom text input widget that supports detecting Enter key presses
-class TextEditPrompt(QTextEdit):
+class TextInput(QTextEdit):
+    """Text input box for typing messages."""
+
+    def __init__(self):
+        super().__init__()
+        # Set fixed size for input box
+        self.setFixedSize(460, 140)
+
     returnPressed = pyqtSignal()  # Signal emitted when Enter is pressed
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.__init_ui()
-
-    def __init_ui(self):
-        """Initialize the UI for the text edit prompt."""
-        self.setStyleSheet("QTextEdit { border: 1px solid #AAA; }")
-
     def keyPressEvent(self, event):
-        """Handle key presses to detect Enter/Shift+Enter."""
-        if event.key() in (
-            Qt.Key.Key_Enter,
-            Qt.Key.Key_Return,
-        ):  # Handle Enter/Return keys
+        """Emit `returnPressed` when Enter is pressed (Shift+Enter inserts a newline)."""
+        if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             if event.modifiers() == Qt.KeyboardModifier.ShiftModifier:
-                # Allow Shift+Enter to add a new line
-                super().keyPressEvent(event)
+                super().keyPressEvent(event)  # Add a new line
             else:
-                # Emit returnPressed for regular Enter
-                self.returnPressed.emit()
+                self.returnPressed.emit()  # Emit the signal for Enter
         else:
             super().keyPressEvent(event)
 
 
-# Prompt: A wrapper for the TextEditPrompt with dynamic height adjustment
 class Prompt(QWidget):
+    """Widget that contains the text input box."""
+
     def __init__(self):
         super().__init__()
-        self.__init_ui()
+        self.input = TextInput()
 
-    def __init_ui(self):
-        """Initialize the UI for the input prompt."""
-        self.__text_edit = TextEditPrompt()
-        self.__text_edit.textChanged.connect(
-            self.update_height
-        )  # Update height on text change
-
-        # Set up a horizontal layout for the prompt
         layout = QHBoxLayout()
-        layout.addWidget(self.__text_edit)
-        layout.setContentsMargins(0, 0, 0, 0)  # No margins
+        layout.addWidget(self.input)
+        layout.setContentsMargins(0, 5, 5, 5)  # Consistent margins
         self.setLayout(layout)
 
-        # Initialize the height of the widget
-        self.update_height()
+        self.setFixedSize(460, 150)  # Adjusted size to match parent
 
-    def update_height(self):
-        """Adjust the height of the prompt based on content."""
-        document = self.__text_edit.document()
-        height = document.size().height()
-        self.setMaximumHeight(
-            int(height + document.documentMargin())
-        )  # Add margin to the height
-
-    def get_text_edit(self):
-        """Return the TextEditPrompt for external access."""
-        return self.__text_edit
+    def get_input(self) -> TextInput:
+        """Return the text input widget."""
+        return self.input
