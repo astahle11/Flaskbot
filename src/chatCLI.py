@@ -6,10 +6,13 @@ import time
 import google.api_core.exceptions
 import google.generativeai as genai
 from google.generativeai import GenerationConfig
+from PyQt6.QtWidgets import QApplication
 from rich.console import Console
 from rich.theme import Theme
 
-from src.export import write_html
+from export import write_html
+from ui.mainWindow import MainWindow
+from ui.chatWidget import ChatBrowser
 
 """
 [GPLv3 LICENSE] 
@@ -25,13 +28,11 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
-sys.tracebacklimit = 0
-version_num = "0.1.0-alpha.4"
-api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
-model_name = "gemini-1.5-pro-latest"
 
 
 class Common:
+    """This is a class for reusing code like exit messages, errors, etc."""
+
     @staticmethod
     def intro() -> None:
         console.print(
@@ -52,17 +53,21 @@ class Common:
 
 custom_theme = Theme(
     {
-        "background": "#1C1C1C",  # Dark Gray background
-        "chatbot": "dark_slate_gray2",  # Bright Magenta (Cyberpunk vibe)
-        "user": "bold grey70",  # Neon Cyan
-        "system": "bold bright_white",  # Bold Bright White for system messages
-        "info": "cyan2",  # Neon Blue for information
-        "error": "#FF4500",  # Orange-Red for errors
-        "highlight": "#32CD32",  # Bright Lime Green for highlights
+        "background": "#1C1C1C",
+        "chatbot": "dark_slate_gray2",
+        "user": "bold grey70",
+        "system": "bold bright_white",
+        "info": "cyan2",
+        "error": "#FF4500",
+        "highlight": "#32CD32",
     },
     inherit=False,
 )
 
+sys.tracebacklimit = 0
+version_num = "0.1.0-alpha.4"
+api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
+model_name = "gemini-1.5-pro-latest"
 console = Console(color_system="auto", soft_wrap=True, record=True, theme=custom_theme)
 
 
@@ -70,6 +75,11 @@ def main():
     export_html = False  # Initialize as false in case the program exits before any response content is generated.
 
     try:
+        app = QApplication(sys.argv)
+        w = MainWindow()
+        w.show()
+        app.exec()
+        
         Common.intro()
 
         while True:
