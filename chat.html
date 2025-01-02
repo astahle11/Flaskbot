@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flask Chat</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="chat-app">
+    <!-- Header -->
+    <div class="chat-header">
+      <h2>Flask Chat</h2>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chat-window">
+    </div>
+
+    <!-- Input Box -->
+    <div class="chat-input">
+      <textarea id="message" placeholder="Type a message..."></textarea>
+      <button id="send-button">Send</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    const socket = io();  // Connect to Flask-SocketIO
+
+    // Send message to server
+    document.getElementById('send-button').addEventListener('click', () => {
+      const message = document.getElementById('message').value;
+      if (message.trim()) {
+        socket.send(message);
+        document.getElementById('message').value = '';
+      }
+    });
+
+    // Receive message from server
+    socket.on('message', (msg) => {
+      const chatWindow = document.getElementById('chat-window');
+      const newMessage = document.createElement('div');
+      newMessage.classList.add('message');
+      newMessage.innerHTML = `<p>${msg}</p>`;
+      chatWindow.appendChild(newMessage);
+      chatWindow.scrollTop = chatWindow.scrollHeight;  // Scroll to bottom
+    });
+  </script>
+</body>
+</html>
