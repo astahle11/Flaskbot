@@ -5,7 +5,7 @@ from datetime import datetime
 from airium import Airium
 
 
-def export_html(html_body: str, a, path_to_html):
+def _export_html(html_body: str, a, path_to_html):
     """Export contents of chat into an HTML format.
 
     Args:
@@ -51,7 +51,7 @@ def write_html(html_body: str) -> None:
         if not os.path.exists(current_wd):
             os.makedirs(current_wd)
 
-        a = export_html(html_body, a, path_to_html)
+        a = _export_html(html_body, a, path_to_html)
 
         if os.path.exists(path_to_html):
             i += 1

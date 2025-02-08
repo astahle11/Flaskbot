@@ -359,41 +359,11 @@
        <set>QTextEdit::AutoAll</set>
       </property>
      </widget>
-     <widget class="QScrollBar" name="verticalScrollBar">
-      <property name="geometry">
-       <rect>
-        <x>440</x>
-        <y>0</y>
-        <width>20</width>
-        <height>490</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <stylestrategy>PreferDefault</stylestrategy>
-       </font>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="tracking">
-       <bool>false</bool>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
-     </widget>
     </widget>
    </widget>
+   <zorder>line</zorder>
+   <zorder>scrollArea</zorder>
+   <zorder>textEdit</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="autoFillBackground">
