@@ -3,15 +3,16 @@
 import sys
 import time
 
-import google.api_core.exceptions
-import google.generativeai as genai
-from google.generativeai import GenerationConfig
 from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QMainWindow
 from rich.console import Console
 from rich.theme import Theme
 
-from export import write_html
-from mainWindow import MainWindow
+
+import models.gemini
+
+run_gemini = True
+run_deepseekV3 = False
 
 """
 [GPLv3 LICENSE] 
@@ -28,12 +29,19 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+sys.tracebacklimit = 0
+
+gemini_config = {
+    "version_num": "0.1.0-alpha.4",
+    "api_key": "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw",
+    "model_name": "gemini-1.5-pro-latest",
+}
 
 class Common:
     """This is a class for reusing code like exit messages, errors, etc."""
 
     @staticmethod
-    def intro() -> None:
+    def intro(version_num, model_name) -> None:
         console.print(
             f"\nChatCLI [Version: {version_num}]",
             style="system",
@@ -64,111 +72,21 @@ custom_theme = Theme(
 )
 
 
-sys.tracebacklimit = 0
-version_num = "0.1.0-alpha.4"
-api_key = "AIzaSyDHx2KDfDXuZB6hbdIi5ti0bShNoCgkXtw"
-model_name = "gemini-1.5-pro-latest"
 console = Console(color_system="auto", soft_wrap=True, record=True, theme=custom_theme)
 
 
 def main():
-    export_html = False  # Initialize as false in case the program exits before any response content is generated.
+    # Initialize as false in case the program exits before any response content is generated.
 
-    try:
-        app = QApplication(sys.argv)
-        w = MainWindow()
-        w.show()
-        app.exec()
+    '''app = QApplication(sys.argv)
+    w = QMainWindow()
+    w.show()
+    app.exec()
+    '''
+    Common.intro(gemini_config['version_num'], gemini_config['model_name'])
 
-        Common.intro()
-
-        while True:
-            export_html = export_html
-            content: list = []
-            try:
-                while True:
-                    str(console.print("\nYou: ", style="user", end=""))
-                    user_input = input("")
-
-                    if user_input.strip():
-                        break
-                    else:
-                        console.print("\n", end="")
-                        continue
-
-                content.append("\nYou: " + user_input)
-
-                config = GenerationConfig(
-                    max_output_tokens=2000,  # Maximum number of tokens in the response
-                    temperature=0.3,  # Controls ranccdomness, higher values = more random
-                    top_k=40,  # Number of top tokens to consider for sampling
-                    top_p=0.95,  # Cumulative probability threshold for sampling
-                )
-
-                genai.configure(api_key=api_key)
-                model = genai.GenerativeModel(model_name)
-                response = model.generate_content(
-                    str(user_input), generation_config=config
-                )
-
-                str(console.print("\nBot: ", style="chatbot"))
-                console.print(f"{response.text}")
-
-                content.append("\nBot: " + response.text)
-
-                html_body = "\n".join(content).replace("\n", "<br>")
-
-                export_html = False  # Once html_body is written to once, exporting an HTML is okay.
-
-            except KeyboardInterrupt:
-                console.print("\n", end="")
-                console.print("\nQuit? y/n", style="system")
-                quit_prompt = input("")
-
-                if quit_prompt.strip() == "y":
-                    raise
-                if quit_prompt.strip() == "n":
-                    continue
-                if quit_prompt.strip() != "y" or "n":
-                    raise KeyboardInterrupt
-
-            except google.api_core.exceptions.TooManyRequests as e:
-                console.print(f"{e}", style="error")
-                console.print(
-                    "Too many requests. 1 minute wait period until next query.\n",
-                    style="error",
-                )
-                time.sleep(60)
-                continue
-
-    except Exception as e:
-        console.print(f"Exception occurred: {e}", style="error")
-
-    except KeyboardInterrupt:
-        pass
-
-    except (
-        google.api_core.exceptions.InternalServerError,
-        google.api_core.exceptions.GatewayTimeout,
-        google.api_core.exceptions.ServerError,
-        google.api_core.exceptions.ServiceUnavailable,
-        google.api_core.exceptions.Unknown,
-    ) as e:
-        console.print(f"API error occurred: {e}", style="error")
-        console.print("Resuming...")
-        time.sleep(2)
-
-        # Do not return, just continue the execution of the script
-
-    finally:
-        if not export_html:
-            exit()
-
-        else:
-            console.print("\nRecording HTML output...", style="system")
-            write_html(html_body)
-            console.print("Done.", style="system")
-            exit()
+    if run_gemini is True:
+        models.gemini.main(gemini_config, console)
 
 
 if __name__ == "__main__":
