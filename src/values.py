@@ -1,5 +1,5 @@
-run_gemini = True
-run_deepseekV3 = False
+select_Gemini = True
+select_Deepseek = False
 
 
 gemini_config = {
