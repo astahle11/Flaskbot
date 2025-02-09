@@ -72,7 +72,7 @@
     "window.systemColorTheme": "dark",
 
     // Terminal Settings
-    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
     "terminal.integrated.scrollback": 10000,
 
     // Explorer Settings
