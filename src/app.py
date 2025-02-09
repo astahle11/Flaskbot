@@ -56,7 +56,7 @@ class Models:
     def __init__(self, message):
         self.message = message
 
-    def ai_gemini(self):
+    def _ai_gemini(self):
         api_key = values.gemini_config["api_key"]
         model_name = values.gemini_config["model_name"]
 
@@ -73,7 +73,7 @@ class Models:
         bot_response = response.text.strip()  # Ensure clean output
         return bot_response
 
-    def ai_deepseek(self):
+    def _ai_deepseek(self):
         api_key = values.open_router_key
         pass  # tbd
 
