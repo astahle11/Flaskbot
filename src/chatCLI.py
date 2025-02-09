@@ -37,6 +37,7 @@ gemini_config = {
     "model_name": "gemini-1.5-pro-latest",
 }
 
+
 class Common:
     """This is a class for reusing code like exit messages, errors, etc."""
 
@@ -78,14 +79,14 @@ console = Console(color_system="auto", soft_wrap=True, record=True, theme=custom
 def main():
     # Initialize as false in case the program exits before any response content is generated.
 
-    '''app = QApplication(sys.argv)
+    """app = QApplication(sys.argv)
     w = QMainWindow()
     w.show()
     app.exec()
-    '''
-    Common.intro(gemini_config['version_num'], gemini_config['model_name'])
+    """
 
     if run_gemini is True:
+        Common.intro(gemini_config["version_num"], gemini_config["model_name"])
         models.gemini.main(gemini_config, console)
 
 
