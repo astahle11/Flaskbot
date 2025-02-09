@@ -3,7 +3,7 @@
 GeminiAPI.spec
 /exports
 /__pycache__
-/bin
-/logs*
-/.vscode*
+bin
+src\logs*
+.vscode*
 __init__.py
