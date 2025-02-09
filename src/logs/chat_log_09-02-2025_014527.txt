@@ -1,0 +1,32 @@
+2025-02-09 01:45:27,952 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.223.124:5000
+2025-02-09 01:45:27,953 - [33mPress CTRL+C to quit[0m
+2025-02-09 01:45:31,173 - 127.0.0.1 - - [09/Feb/2025 01:45:31] "GET /socket.io/?EIO=4&transport=polling&t=PJfTCES HTTP/1.1" 200 -
+2025-02-09 01:45:31,182 - 127.0.0.1 - - [09/Feb/2025 01:45:31] "POST /socket.io/?EIO=4&transport=polling&t=PJfTCEf&sid=UVnRa2EWN884S0JlAAAA HTTP/1.1" 200 -
+2025-02-09 01:45:31,187 - 127.0.0.1 - - [09/Feb/2025 01:45:31] "GET /socket.io/?EIO=4&transport=polling&t=PJfTCEg&sid=UVnRa2EWN884S0JlAAAA HTTP/1.1" 200 -
+2025-02-09 01:45:38,870 - ssds
+2025-02-09 01:45:49,479 - SSDs stand for **Solid State Drives**.  They are a type of non-volatile storage media that store persistent data on solid-state flash memory.  Unlike traditional hard disk drives (HDDs), which use spinning magnetic platters, SSDs have no moving parts. This key difference results in several advantages:
+
+* **Speed:** SSDs are significantly faster than HDDs in terms of read and write speeds. This translates to faster boot times, quicker application loading, and improved overall system responsiveness.
+* **Durability:**  Without moving parts, SSDs are more resistant to physical shock and vibration, making them more reliable and less prone to failure compared to HDDs.
+* **Quiet Operation:** The absence of moving parts also makes SSDs silent, unlike the whirring or clicking sounds often associated with HDDs.
+* **Lower Power Consumption:** SSDs generally consume less power than HDDs, which can contribute to longer battery life in laptops.
+* **Lighter Weight:** SSDs are typically lighter than HDDs, which is beneficial for portable devices.
+
+However, SSDs also have some drawbacks:
+
+* **Cost:**  SSDs are generally more expensive per gigabyte than HDDs, although the price gap has been narrowing over time.
+* **Limited Write Cycles:**  Flash memory has a limited number of write cycles. While modern SSDs have technologies to mitigate this and offer long lifespans, they theoretically don't last forever like HDDs (though in practice, other components are likely to fail before the SSD does).
+
+There are different types of SSDs based on their interface and form factor, including:
+
+* **SATA SSDs:** These use the SATA interface, which is the same interface used by traditional HDDs.
+* **NVMe SSDs:**  These use the NVMe (Non-Volatile Memory Express) interface, which is a newer, faster interface designed specifically for SSDs.
+* **M.2 SSDs:** These are small form factor SSDs that are commonly used in laptops and desktops. They can use either the SATA or NVMe interface.
+
+SSDs have become increasingly popular and are now the standard storage option in many new computers and laptops. They offer a significant performance boost over traditional HDDs and are a worthwhile upgrade for anyone looking to improve their system's speed and responsiveness.
+2025-02-09 01:49:37,716 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-02-09 01:49:37,716 - [33mPress CTRL+C to quit[0m
