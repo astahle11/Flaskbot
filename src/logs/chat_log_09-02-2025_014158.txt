@@ -1,0 +1,17 @@
+2025-02-09 01:41:58,129 -  * Debugger is active!
+2025-02-09 01:41:58,149 -  * Debugger PIN: 361-514-503
+2025-02-09 01:41:58,325 - 127.0.0.1 - - [09/Feb/2025 01:41:58] "GET / HTTP/1.1" 200 -
+2025-02-09 01:41:58,332 - 127.0.0.1 - - [09/Feb/2025 01:41:58] "GET /socket.io/?EIO=4&transport=polling&t=PJfSNl2 HTTP/1.1" 200 -
+2025-02-09 01:41:58,646 - 127.0.0.1 - - [09/Feb/2025 01:41:58] "GET / HTTP/1.1" 200 -
+2025-02-09 01:41:58,680 - 127.0.0.1 - - [09/Feb/2025 01:41:58] "POST /socket.io/?EIO=4&transport=polling&t=PJfSOH7&sid=Kt0kXGdObhkwiZF-AAAA HTTP/1.1" 200 -
+2025-02-09 01:41:58,687 - 127.0.0.1 - - [09/Feb/2025 01:41:58] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-02-09 01:41:58,703 - 127.0.0.1 - - [09/Feb/2025 01:41:58] "GET /socket.io/?EIO=4&transport=polling&t=PJfSOH9&sid=Kt0kXGdObhkwiZF-AAAA HTTP/1.1" 200 -
+2025-02-09 01:41:59,055 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-02-09 01:41:59,157 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "GET /socket.io/?EIO=4&transport=polling&t=PJfSOOy HTTP/1.1" 200 -
+2025-02-09 01:41:59,322 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "GET /socket.io/?EIO=4&transport=polling&t=PJfSOTv HTTP/1.1" 200 -
+2025-02-09 01:41:59,479 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "POST /socket.io/?EIO=4&transport=polling&t=PJfSOU1&sid=IzSdpdGOeyFmWQv-AAAC HTTP/1.1" 200 -
+2025-02-09 01:41:59,499 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "GET /socket.io/?EIO=4&transport=polling&t=PJfSOU8&sid=IzSdpdGOeyFmWQv-AAAC HTTP/1.1" 200 -
+2025-02-09 01:41:59,517 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "POST /socket.io/?EIO=4&transport=polling&t=PJfSOWc&sid=oIDzGngduq8Ks44nAAAD HTTP/1.1" 200 -
+2025-02-09 01:41:59,659 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "GET /socket.io/?EIO=4&transport=polling&t=PJfSOWi&sid=oIDzGngduq8Ks44nAAAD HTTP/1.1" 200 -
+2025-02-09 01:41:59,665 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "GET /socket.io/?EIO=4&transport=polling&t=PJfSOaB&sid=IzSdpdGOeyFmWQv-AAAC HTTP/1.1" 200 -
+2025-02-09 01:41:59,923 - 127.0.0.1 - - [09/Feb/2025 01:41:59] "GET /socket.io/?EIO=4&transport=websocket&sid=IzSdpdGOeyFmWQv-AAAC HTTP/1.1" 200 -

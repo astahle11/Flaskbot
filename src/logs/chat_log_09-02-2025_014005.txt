@@ -1,0 +1,7 @@
+2025-02-09 01:40:05,738 -  * Debugger is active!
+2025-02-09 01:40:05,759 -  * Debugger PIN: 361-514-503
+2025-02-09 01:40:05,895 - 127.0.0.1 - - [09/Feb/2025 01:40:05] "GET /socket.io/?EIO=4&transport=polling&t=PJfRy9d HTTP/1.1" 200 -
+2025-02-09 01:40:05,903 - 127.0.0.1 - - [09/Feb/2025 01:40:05] "POST /socket.io/?EIO=4&transport=polling&t=PJfRyqB&sid=_-utEU-kEYaD8U47AAAA HTTP/1.1" 200 -
+2025-02-09 01:40:06,226 - 127.0.0.1 - - [09/Feb/2025 01:40:06] "GET /socket.io/?EIO=4&transport=polling&t=PJfRyqD&sid=_-utEU-kEYaD8U47AAAA HTTP/1.1" 200 -
+2025-02-09 01:40:06,568 - 127.0.0.1 - - [09/Feb/2025 01:40:06] "GET /socket.io/?EIO=4&transport=polling&t=PJfRyvZ&sid=_-utEU-kEYaD8U47AAAA HTTP/1.1" 200 -
+2025-02-09 01:40:14,957 -  * Detected change in 'c:\\vscode\\python\\tools\\chatCLI\\src\\app.py', reloading
