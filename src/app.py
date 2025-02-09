@@ -29,7 +29,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 
 """
 
+
 sys.tracebacklimit = 0
+
 
 right_now = datetime.now()
 timestamp = datetime.strftime(right_now, "%d-%m-%Y_%H%M%S")
@@ -50,27 +52,42 @@ def index():
     return render_template("index.html")
 
 
-@socketio.on("message")
-def handle_message(message):
-    api_key = values.gemini_config["api_key"]
-    model_name = values.gemini_config["model_name"]
+class Models:
+    def __init__(self, message):
+        self.message = message
 
+    def ai_gemini(self):
+        api_key = values.gemini_config["api_key"]
+        model_name = values.gemini_config["model_name"]
+
+        config = GenerationConfig(
+            max_output_tokens=2000,  # Maximum number of tokens in the response
+            temperature=0.3,  # Controls ranccdomness, higher values = more random
+            top_k=40,  # Number of top tokens to consider for sampling
+            top_p=0.95,  # Cumulative probability threshold for sampling
+        )
+
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel(model_name)
+        response = model.generate_content(str(self.message), generation_config=config)
+        bot_response = response.text.strip()  # Ensure clean output
+        return bot_response
+
+    def ai_deepseek(self):
+        api_key = values.open_router_key
+        pass  # tbd
+
+
+@socketio.on("message")
+def handle_message(message, models: Models):
     send(f"{message}")
     logging.info(message)
 
-    config = GenerationConfig(
-        max_output_tokens=2000,  # Maximum number of tokens in the response
-        temperature=0.3,  # Controls ranccdomness, higher values = more random
-        top_k=40,  # Number of top tokens to consider for sampling
-        top_p=0.95,  # Cumulative probability threshold for sampling
-    )
+    if values.select_Gemini is True:
+        bot_response = models.ai_gemini(message)
+    if values.select_Deepseek is True:
+        bot_response = models.ai_deepseek(message)
 
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(model_name)
-    response = model.generate_content(str(message), generation_config=config)
-    bot_response = response.text.strip()  # Ensure clean output
-
-    # Send response back to client
     send(bot_response)
     logging.info(bot_response)
 
@@ -80,8 +97,11 @@ def open_browser():
 
 
 def main():
+    models = Models()
     try:
-        socketio.run(app, host="0.0.0.0", port=5000, debug=False, log_output=False)
+        socketio.run(
+            app, host="0.0.0.0", port=5000, debug=False, log_output=False, **models
+        )
 
         app.run(debug=False)
         Timer(1, open_browser).start()  # Wait 1 second before opening
