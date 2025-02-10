@@ -33,15 +33,6 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 sys.tracebacklimit = 0
 
 
-right_now = datetime.now()
-timestamp = datetime.strftime(right_now, "%d-%m-%Y_%H%M%S")
-
-logging.basicConfig(
-    filename=f"logs/chat_log_{timestamp}.txt",
-    level=logging.INFO,
-    format="%(asctime)s - %(message)s",
-)
-
 app = Flask(__name__)
 app.logger.setLevel(logging.WARNING)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -53,8 +44,8 @@ def index():
 
 
 class Models:
-    def __init__(self, message):
-        self.message = message
+    def __init__(self, **kwargs):
+        self.message = kwargs
 
     def _ai_gemini(self):
         api_key = values.gemini_config["api_key"]
@@ -97,14 +88,12 @@ def open_browser():
 
 
 def main():
-    models = Models()
+    Models()
     try:
-        socketio.run(
-            app, host="0.0.0.0", port=5000, debug=False, log_output=False, **models
-        )
+        socketio.run(app, host="0.0.0.0", port=5000, debug=False, log_output=False)
 
-        app.run(debug=False)
         Timer(1, open_browser).start()  # Wait 1 second before opening
+        app.run(debug=False)
 
     except google.api_core.exceptions.TooManyRequests as e:
         send(f"{e}")
