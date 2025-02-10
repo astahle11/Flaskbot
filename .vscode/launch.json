@@ -5,13 +5,14 @@
             "name": "Python: main.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "C:\\vscode\\python\\ChatCLI\\ChatCLI.py",
+            "program": "C:\\vscode\\python\\tools\\chatCLI\\src\\chatCLI.py",
             "console": "integratedTerminal",
             "showReturnValue": true,
             "justMyCode": true,
             "env": {
-                "PYTHONPATH": "C:\\vscode\\python\\ChatCLI\\ChatCLI.py"
+                "PYTHONPATH": "C:\\vscode\\python\\tools\\chatCLI\\"
             }
+            
         },
         
     ],
