@@ -1,0 +1,1 @@
+This script uses Flask to set up a webpage for interacting with AI models. An API key is required. Currently only configured to work with Gemini. 100% personal project and not intended for any kind of use outside of myself. Feel free to borrow from it.
