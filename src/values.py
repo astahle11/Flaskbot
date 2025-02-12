@@ -9,5 +9,5 @@ gemini_config = {
 }
 
 open_router_key = (
-    "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"
+    ""
 )
